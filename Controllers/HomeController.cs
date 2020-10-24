@@ -61,6 +61,13 @@ namespace GetMeetings
             return View(dlmodel);
         }
 
+        //Get directions 
+        public string GetDirections(string loc)
+        {
+            return "Hello World " + loc.ToString();
+        }
+
+
         // This should go into a separate file
         private static List<SelectListItem> PopulateTowns()
         {

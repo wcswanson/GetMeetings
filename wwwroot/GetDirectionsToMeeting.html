@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Get Directions to Meeting</title>
+	<meta charset="utf-8" />
+    <!-- <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAQdm376MhdEOr1rM7-l9pLPciuJR6sHGc &callback=initMap"></script> -->
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyA1-PXeduGUoPa4FFuahdNAq0m4gEJR0rM&callback=initMap"></script>
+    <script type="text/javascript">
+        var queryAddr;
+        //var httpRequest = window.location.href;
+        function getQueryVariable(httpRequest) {
+            queryAddr = window.location.search.substring(1);
+            queryAddr = queryAddr.replace(/%20/g, " ");
+          //  window.alert(queryAddr);
+            return (queryAddr);
+        } 
+        var map;
+        var geocoder;
+        function InitializeMap() {
+
+            var latlng = new google.maps.LatLng(44.546434, -68.430193);
+            var myOptions =
+            {
+                zoom: 10,
+                center: latlng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                disableDefaultUI: true
+            };
+           
+            map = new google.maps.Map(document.getElementById("map"), myOptions);
+        }
+
+        function FindLocation() {
+            geocoder = new google.maps.Geocoder();
+            InitializeMap();
+           // alert(queryAddr);
+            //var address = document.getElementById("addressinput").value;
+            geocoder.geocode({ 'address': queryAddr }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    map.setCenter(results[0].geometry.location);
+                    window.alert(results[0].geometry.location);
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location
+                    });                   
+                }
+                else {
+                    alert("Geocode was not successful for the following reason: " + status);
+                }
+            });
+
+        }
+  
+        window.onload = getQueryVariable(document.URL);
+       // alert(queryAddr);
+        window.onload = InitializeMap;
+        window.onload = FindLocation;
+     
+        
+      
+    </script>
+</head>
+<body>
+    <div style="border: solid">
+        <script>
+            document.write(results[0].geometry.location);
+        </script><br />
+        <script>
+            document.write(getQueryVariable(document.URL));
+        </script>
+        <br />
+        <input id="Button1" type="button" value="Find" onclick="return Button1_onclick()" />
+    </div>
+    <div id="map" style="height: 600px"></div>
+    <!--
+    <script>
+        document.write(getQueryVariable(window.location.href));
+    </script>
+    <br />
+    <script>
+        document.write(query);
+    </script><br />
+    <button onclick="document.write(query)">Try it</button>
+    <br />
+    <button onclick="document.write(getQueryVariable(window.location.href))">Try it</button>
+    <br />
+    <button onclick="document.write(document.URL) ">Try it</button>
+    <br />
+    <button onclick="document.write(getQueryVariable(document.URL))">Try it</button>
+   -->
+</body>
+</html>
