@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using GetMeetings.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.VisualBasic;
 
 namespace GetMeetings
     .Controllers
@@ -18,6 +19,7 @@ namespace GetMeetings
         int dayId = 0;
         int timeId = 0;
         string town = "";
+        static string msg = "";
         public IActionResult Index()
         {
             var dlmodel = new DlViewModel()
@@ -74,13 +76,21 @@ namespace GetMeetings
 
                 using (SqlDataReader dr = cmd.ExecuteReader())
                 {
-                    while (dr.Read())
+                    try
                     {
-                        items.Add(new SelectListItem
+
+                        while (dr.Read())
                         {
-                            Value = dr["Town"].ToString(),
-                            Text = dr["Town"].ToString()
-                        });
+                            items.Add(new SelectListItem
+                            {
+                                Value = dr["Town"].ToString(),
+                                Text = dr["Town"].ToString()
+                            });
+                        }
+                    }
+                    catch (SqlException ex)
+                    {
+                        msg = msg + " spTowns: " + ex.Message.ToString();
                     }
                 }
                 connection.Close();
@@ -103,15 +113,23 @@ namespace GetMeetings
 
                 using (SqlDataReader dr = cmd.ExecuteReader())
                 {
-                    while (dr.Read())
+                    try
                     {
-                        items.Add(new SelectListItem
+                        while (dr.Read())
                         {
-                            Value = dr["DayID"].ToString(),
-                            Text = dr["DayName"].ToString()
-                        });
+                            items.Add(new SelectListItem
+                            {
+                                Value = dr["DayID"].ToString(),
+                                Text = dr["DayName"].ToString()
+                            });
+                        }
+                    }
+                    catch(SqlException ex)
+                    {
+                        msg = msg + " spDow: " + ex.Message.ToString();
                     }
                 }
+
                 connection.Close();
             }
             return items;
@@ -130,16 +148,25 @@ namespace GetMeetings
                 SqlCommand cmd = new SqlCommand(sql, connection);
                 cmd.CommandType = CommandType.StoredProcedure;
 
+
                 using (SqlDataReader dr = cmd.ExecuteReader())
                 {
-                    while (dr.Read())
+                    try
                     {
-                        items.Add(new SelectListItem
+                        while (dr.Read())
                         {
-                            Value = dr["TimeID"].ToString(),
-                            Text = dr["Time"].ToString()
-                        });
+                            items.Add(new SelectListItem
+                            {
+                                Value = dr["TimeID"].ToString(),
+                                Text = dr["Time"].ToString()
+                            });
+                        }
                     }
+                    catch (SqlException ex)
+                    {
+                        msg = "sptime: " + ex.Message.ToString();
+                    }
+                    
                 }
                 connection.Close();
             }
@@ -215,23 +242,32 @@ namespace GetMeetings
 
                 using (SqlDataReader dr = cmd.ExecuteReader())
                 {
-                    while (dr.Read())
+                    try
                     {
-                        MeetingListModel ml = new MeetingListModel();
-                        ml.ListID = Convert.ToInt32(dr["ListID"]);
-                        ml.DOW = Convert.ToInt32(dr["DOW"]);
-                        ml.Day = Convert.ToString(dr["Day"]);
-                        ml.TimeID = Convert.ToInt32(dr["TimeID"]);
-                        ml.Time = Convert.ToString(dr["Time"]);
-                        ml.Town = Convert.ToString(dr["Town"]);
-                        ml.GroupName = Convert.ToString(dr["GroupName"]);
-                        ml.Information = Convert.ToString(dr["Information"]);
-                        ml.Location = Convert.ToString(dr["Location"]);
-                        ml.Type = Convert.ToString(dr["Type"]);
-                        ml.suspend = Convert.ToBoolean(dr["suspend"]);
 
-                        meetingList.Add(ml);
 
+                        while (dr.Read())
+                        {
+                            MeetingListModel ml = new MeetingListModel();
+                            ml.ListID = Convert.ToInt32(dr["ListID"]);
+                            ml.DOW = Convert.ToInt32(dr["DOW"]);
+                            ml.Day = Convert.ToString(dr["Day"]);
+                            ml.TimeID = Convert.ToInt32(dr["TimeID"]);
+                            ml.Time = Convert.ToString(dr["Time"]);
+                            ml.Town = Convert.ToString(dr["Town"]);
+                            ml.GroupName = Convert.ToString(dr["GroupName"]);
+                            ml.Information = Convert.ToString(dr["Information"]);
+                            ml.Location = Convert.ToString(dr["Location"]);
+                            ml.Type = Convert.ToString(dr["Type"]);
+                            ml.suspend = Convert.ToBoolean(dr["suspend"]);
+
+                            meetingList.Add(ml);
+
+                        }
+                    }
+                    catch(SqlException ex)
+                    {
+                        msg = msg + " spList_get: " + ex.Message.ToString();
                     }
                     connection.Close();
                 }
