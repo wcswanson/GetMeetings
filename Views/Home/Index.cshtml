@@ -1,6 +1,7 @@
 ﻿@*
     Model template -- @model <modelName>
 *@
+@model GetMeetings.Models.DlViewModel
 <!DOCTYPE html>
 
 <html>
@@ -15,6 +16,96 @@
 <body>
     <div class="container-fluid">
         <h1>Index for Meetings</h1>
+        <div class="container">
+            <form asp-controller="Home" method="post" role="form">
+                <main role="main" class="pb-3">
+                    <h1>Index for Dropdowns with ADO</h1>
+
+                    <hr />
+
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <div class="col-sm-2">
+                                <label class="control-label">Suspended (True)</label>
+                                <select asp-for="SuspendSelect" asp-items="Model.Suspended"></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-2">
+                                <label class="control-label">Day</label>
+                                <select asp-for="DOWSelection" class="form-control" asp-items="@(new SelectList(@Model.DOWModel, "Value", "Text"));">
+                                    <option value="8">All</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Time of Day -->
+                        <div class="form-group">
+                            <div class="col-sm-3">
+                                <label class="control-label">Time</label>
+                                <select asp-for="TimeSelection" class="form-control" asp-items="@(new SelectList(@Model.TimeModel, "Value", "Text"))">
+                                    <option value="-">All</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Town -->
+                        <div class="form-group">
+                            <div class="col-sm-3" id="filter-value-group">
+                                <label class="control-label">Town</label>
+                                <!-- Add Select Town -->
+                                <select asp-for="TownSelection" class="form-control" asp-items="@(new SelectList(@Model.TownModel, "Value", "Text"))">
+                                    <option value="-">Select Town</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                                <input id="Submit1" type="submit" value="Get Selection" />
+                            </div>
+                        </div>
+                    </div>
+                    <!-- meeting list here-->
+                    <table class="table table-bordered table-sm table-striped">
+                        <thead>
+                            <tr>
+                                <th>Suspend</th>
+                                <th>Day</th>
+                                <th>Time</th>
+                                <th>Town</th>
+                                <th>Group Name</th>
+                                <th>Information</th>
+                                <th>Location</th>
+                                <th>Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.ListModel == null)
+                            {
+                                <tr><td colspan="5" class="text-center">No Meeting Lsit for that selection</td></tr>
+                            }
+                            else
+                            {
+                                @foreach (var m in Model.ListModel)
+                                {
+                                    <tr>
+                                        <td>@m.suspend</td>
+                                        <td>@m.Day</td>
+                                        <td>@m.Time</td>
+                                        <td>@m.Town</td>
+                                        <td>@m.GroupName</td>
+                                        <td>@m.Information</td>
+                                        <td>@m.Location</td>
+                                        <td>@m.Type</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </main>
+            </form>
+        </div>
     </div>
 </body>
 </html>
