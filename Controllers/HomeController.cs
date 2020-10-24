@@ -33,6 +33,32 @@ namespace GetMeetings
             return View(dlmodel);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Index(char? SuspendSelect, int? DOWSelection, int? TimeSelection, string TownSelection)
+        {
+
+
+            // @DOWID INTEGER = NULL,
+            // @TimeID INTEGER = NULL,
+            // @Town VARCHAR(25) = NULL,
+            // @Suspend BIT = NULL
+            b = (char)SuspendSelect;
+            //dayId = (int)DOWSelection;
+            //timeId = (int)TimeSelection;
+            //town = TownSelection.ToString();
+
+            var dlmodel = new DlViewModel()
+            {
+                TownModel = PopulateTowns(),
+                DOWModel = PopulateDOW(),
+                TimeModel = PopulateTime(),
+                ListModel = PopulateList(b, DOWSelection, TimeSelection, TownSelection)
+            };
+
+            return View(dlmodel);
+        }
+
         // This should go into a separate file
         private static List<SelectListItem> PopulateTowns()
         {
@@ -155,9 +181,9 @@ namespace GetMeetings
                 // DOW (day of week id)
                 SqlParameter dowid = cmd.Parameters.Add("@DOWID", SqlDbType.Int);
 
-                if (timeId > 0 && timeId < 8)
+                if (dow > 0 && dow < 8)
                 {
-                    dowid.Value = (int)timeId;
+                    dowid.Value = (int)dow;
                 }
                 else
                 {
