@@ -90,25 +90,25 @@
                             {
                                 @foreach (var m in Model.ListModel)
                                 {
-                        <tr>
-                            <td>@m.suspend</td>
-                            <td>@m.Day</td>
-                            <td>@m.Time</td>
-                            <td>@m.Town</td>
-                            <td>@m.GroupName</td>
-                            <td>@m.Information</td>
-                            <td>@m.Location</td>
-                            <td>@m.Type</td>
-                            <td>
-                                <a asp-action="GetDirections" class="btn btn-sm btn-warning" asp-route-listid="">Get Dir</a>
-                                <input type="hidden" name="loc" asp-route-loc="@m.Location"  />                                
-                            </td>
+                                    <tr>
+                                        <td>@m.suspend</td>
+                                        <td>@m.Day</td>
+                                        <td>@m.Time</td>
+                                        <td>@m.Town</td>
+                                        <td>@m.GroupName</td>
+                                        <td>@m.Information</td>
+                                        <td>@m.Location</td>
+                                        <td>@m.Type</td>
+                                        <td>
+                                            <a asp-action="GetDirections" class="btn btn-sm btn-warning" asp-route-id="@m.Location, @m.Town">Get Dir</a>
+                                        </td>
 
-                        </tr>
+                                    </tr>
                                 }
                             }
                         </tbody>
                     </table>
+                    <a asp-action="ExportList" class="btn btn-sm btn-info">Export Meeting List</a>
                 </main>
             </form>
         </div>

@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using GetMeetings.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Net.Http.Headers;
 using Microsoft.VisualBasic;
 
 namespace GetMeetings
@@ -20,6 +23,8 @@ namespace GetMeetings
         int timeId = 0;
         string town = "";
         static string msg = "";
+        private Stream fileStream;
+
         public IActionResult Index()
         {
             var dlmodel = new DlViewModel()
@@ -61,12 +66,27 @@ namespace GetMeetings
             return View(dlmodel);
         }
 
-        //Get directions 
-        public string GetDirections(string loc)
+        //Get directions
+        // [HttpGet("{id}")]
+        public RedirectResult GetDirections(string id)
         {
-            return "Hello World " + loc.ToString();
+            return Redirect("http://downeastintergroup.org/DirectionsToMeeting.html?" + id.ToString() + ", ME");
+           
         }
 
+        // *******************************************************/
+        // Export list
+        // Solution: https://stackoverflow.com/questions/53491070/create-text-file-and-download-without-saving-on-server-in-asp-net-core-mvc-2-1
+        public ContentResult ExportList()
+        {
+
+            string ml = ExportMeetingList();
+
+            // To product a file name for down load.
+            Response.Headers.Add("Content-Disposition", "attachment; filename=\"MeetingList.txt\"");
+
+            return Content(ml, "text/csv");
+        }
 
         // This should go into a separate file
         private static List<SelectListItem> PopulateTowns()
@@ -282,6 +302,52 @@ namespace GetMeetings
                 return meetingList;
             }
         }
+
+       private static string ExportMeetingList()
+        {
+            string comma = ", ";
+            string MeetingListTxt = "";
+            string docPath = "";
+
+            using (SqlConnection connection = new SqlConnection(Startup.cnstr))
+            {
+
+                connection.Open();
+                string sql = "GetMeetingList";
+
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter();
+                cmd.Connection = connection;
+                sqlDataAdapter.SelectCommand = cmd;
+                DataTable dataTable = new DataTable();
+                try
+                {
+                    sqlDataAdapter.Fill(dataTable);
+                }
+                catch (InvalidCastException ex)
+                {
+                    msg = ex.ToString();
+                }
+                StringBuilder stringBuilder = new StringBuilder();
+                foreach (DataColumn column in dataTable.Columns)
+                {
+                    stringBuilder.Append(column.ColumnName + comma);
+                }
+                stringBuilder.AppendLine();
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    foreach (DataColumn column2 in dataTable.Columns)
+                    {
+                        stringBuilder.Append(row[column2.ColumnName].ToString() + comma);
+                    }
+                    stringBuilder.AppendLine();
+                }              
+
+                 return stringBuilder.ToString();
+            }
+        }
+            
 
     } // controller class
 } // Namespance

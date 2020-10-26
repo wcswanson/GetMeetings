@@ -55,13 +55,10 @@
        // alert(queryAddr);
         window.onload = InitializeMap;
         window.onload = FindLocation;
-     
-        
-      
     </script>
 </head>
 <body>
-    <div style="border: solid">
+   <div style="border: solid">
         <script>
             document.write(results[0].geometry.location);
         </script><br />
@@ -72,21 +69,22 @@
         <input id="Button1" type="button" value="Find" onclick="return Button1_onclick()" />
     </div>
     <div id="map" style="height: 600px"></div>
+
     <!--
-    <script>
-        document.write(getQueryVariable(window.location.href));
-    </script>
-    <br />
-    <script>
-        document.write(query);
-    </script><br />
-    <button onclick="document.write(query)">Try it</button>
-    <br />
-    <button onclick="document.write(getQueryVariable(window.location.href))">Try it</button>
-    <br />
-    <button onclick="document.write(document.URL) ">Try it</button>
-    <br />
-    <button onclick="document.write(getQueryVariable(document.URL))">Try it</button>
-   -->
+     <script>
+         document.write(getQueryVariable(window.location.href));
+     </script>
+     <br />
+     <script>
+         document.write(query);
+     </script><br />
+     <button onclick="document.write(query)">Try it</button>
+     <br />
+     <button onclick="document.write(getQueryVariable(window.location.href))">Try it</button>
+     <br />
+     <button onclick="document.write(document.URL) ">Try it</button>
+     <br />
+     <button onclick="document.write(getQueryVariable(document.URL))">Try it</button>
+    -->
 </body>
 </html>
