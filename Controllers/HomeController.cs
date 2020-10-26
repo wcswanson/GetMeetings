@@ -15,15 +15,24 @@ using Microsoft.VisualBasic;
 namespace GetMeetings
     .Controllers
 {
+
+    //todo: Change background on buttons
+    //todo: Change font size to make it smaller
+    //todo: Remove titles in cshtml to make the presentation iframe ready
+    //todo: Correct spelling in Group name in sp
+    //todo: Remove empty space for first 2 columns in sp.
+    //todo: bootstrap styling
+    //todo: errow log add
+
     public class HomeController : Controller
     {   
-        // Vars for holding information to pass to the spList_get
-       char b = 'a';
+        // Vars for holding information to pass to the spList
+        char b = 'a';
         int dayId = 0;
         int timeId = 0;
         string town = "";
         static string msg = "";
-        private Stream fileStream;
+        //private Stream fileStream;
 
         public IActionResult Index()
         {
@@ -212,7 +221,7 @@ namespace GetMeetings
             {
                 connection.Open();
 
-                string sql = "spList_get";
+                string sql = "spList";
                 SqlCommand cmd = new SqlCommand(sql, connection);
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -266,13 +275,10 @@ namespace GetMeetings
                     townname.Value = town.ToString();
                 }
 
-
                 using (SqlDataReader dr = cmd.ExecuteReader())
                 {
                     try
                     {
-
-
                         while (dr.Read())
                         {
                             MeetingListModel ml = new MeetingListModel();
@@ -289,12 +295,11 @@ namespace GetMeetings
                             ml.suspend = Convert.ToBoolean(dr["suspend"]);
 
                             meetingList.Add(ml);
-
                         }
                     }
                     catch(SqlException ex)
                     {
-                        msg = msg + " spList_get: " + ex.Message.ToString();
+                        msg = msg + " spList: " + ex.Message.ToString();
                     }
                     connection.Close();
                 }

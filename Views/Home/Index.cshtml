@@ -1,28 +1,20 @@
-﻿@*
-    Model template -- @model <modelName>
-*@
-@model GetMeetings.Models.DlViewModel
+﻿@model GetMeetings.Models.DlViewModel
 <!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>ADO - Create Inventory</title>
+    <title>DEIG - Meeting List</title>
     <!-- check the path for added bootstrap -->
     <link href="~/lib/twitter-bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
     <link href="~/css/style.css" rel="stylesheet" />
 </head>
 <body>
-    <div class="container-fluid">
-        <h1>Index for Meetings</h1>
+    <div class="container-fluid">        
         <div class="container">
             <form asp-controller="Home" method="post" role="form">
-                <main role="main" class="pb-3">
-                    <h1>Index for Dropdowns with ADO</h1>
-
-                    <hr />
-
+                <main role="main" class="pb-3">                    
                     <div class="form-inline">
                         <div class="form-group">
                             <div class="col-sm-2">
@@ -30,7 +22,6 @@
                                 <select asp-for="SuspendSelect" asp-items="Model.Suspended"></select>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <div class="col-sm-2">
                                 <label class="control-label">Day</label>
@@ -100,7 +91,7 @@
                                         <td>@m.Location</td>
                                         <td>@m.Type</td>
                                         <td>
-                                            <a asp-action="GetDirections" class="btn btn-sm btn-warning" asp-route-id="@m.Location, @m.Town">Get Dir</a>
+                                            <a asp-action="GetDirections" class="btn btn-sm btn-outline-info" asp-route-id="@m.Location, @m.Town">Get Dir</a>
                                         </td>
 
                                     </tr>

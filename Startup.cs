@@ -21,6 +21,8 @@ namespace GetMeetings
         public static string cnstr;
         public void ConfigureServices(IServiceCollection services)
         {
+            
+            // 
             // Added
             cnstr = Configuration.GetConnectionString("cnStr");
             services.AddControllersWithViews();
