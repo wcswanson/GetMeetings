@@ -1,16 +1,11 @@
-﻿using System;
+﻿using GetMeetings.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using GetMeetings.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Net.Http.Headers;
-using Microsoft.VisualBasic;
 
 namespace GetMeetings
     .Controllers
@@ -310,9 +305,7 @@ namespace GetMeetings
 
        private static string ExportMeetingList()
         {
-            string comma = ", ";
-            string MeetingListTxt = "";
-            string docPath = "";
+            string comma = ", ";          
 
             using (SqlConnection connection = new SqlConnection(Startup.cnstr))
             {
