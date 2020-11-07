@@ -13,14 +13,14 @@ namespace GetMeetings.Models
     public class DlViewModel
     {
         // Suspend
-        public string SuspendSelect { get; set; }
-        // Plural
-        public List<SelectListItem> Suspended = new List<SelectListItem>
-        {
-            new SelectListItem { Value = "a", Text = "All" },
-            new SelectListItem { Value = "1", Text = "Suspended" },
-            new SelectListItem { Value = "0", Text = "Not suspended"  },
-        };
+        //public string SuspendSelect { get; set; }
+        //// Plural
+        //public List<SelectListItem> Suspended = new List<SelectListItem>
+        //{
+        //    new SelectListItem { Value = "a", Text = "All" },
+        //    new SelectListItem { Value = "1", Text = "Suspended" },
+        //    new SelectListItem { Value = "0", Text = "Not suspended"  },
+        //};
 
         // Day of Week (DOW)
         public string DOWSelection { get; set; }

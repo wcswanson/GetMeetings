@@ -18,11 +18,12 @@ namespace GetMeetings
     //todo: Remove empty space for first 2 columns in sp.
     //todo: bootstrap styling
     //todo: errow log add
+    //todo: Suspended removed from meeting list but hook is left for sp but always false
 
     public class HomeController : Controller
     {   
         // Vars for holding information to pass to the spList
-        char b = 'a';
+        //char b = 'a';
         int dayId = 0;
         int timeId = 0;
         string town = "";
@@ -36,10 +37,11 @@ namespace GetMeetings
                 TownModel = PopulateTowns(),
                 DOWModel = PopulateDOW(),
                 TimeModel = PopulateTime(),
-                ListModel = PopulateList(b, dayId, timeId, town)
+                // ListModel = PopulateList(b, dayId, timeId, town)
+                ListModel = PopulateList(dayId, timeId, town)
             };
 
-            dlmodel.SuspendSelect = "a";
+          //  dlmodel.SuspendSelect = "a";
 
             return View(dlmodel);
         }
@@ -54,7 +56,7 @@ namespace GetMeetings
             // @TimeID INTEGER = NULL,
             // @Town VARCHAR(25) = NULL,
             // @Suspend BIT = NULL
-            b = (char)SuspendSelect;
+            //b = (char)SuspendSelect;
             //dayId = (int)DOWSelection;
             //timeId = (int)TimeSelection;
             //town = TownSelection.ToString();
@@ -64,7 +66,8 @@ namespace GetMeetings
                 TownModel = PopulateTowns(),
                 DOWModel = PopulateDOW(),
                 TimeModel = PopulateTime(),
-                ListModel = PopulateList(b, DOWSelection, TimeSelection, TownSelection)
+                // ListModel = PopulateList(b, DOWSelection, TimeSelection, TownSelection)
+                ListModel = PopulateList(DOWSelection, TimeSelection, TownSelection)
             };
 
             return View(dlmodel);
@@ -204,7 +207,8 @@ namespace GetMeetings
             return items;
         }
 
-        private static List<MeetingListModel> PopulateList(char? b, int? dow, int? timeId, string town)
+        // private static List<MeetingListModel> PopulateList(char? b, int? dow, int? timeId, string town)
+        private static List<MeetingListModel> PopulateList(int? dow, int? timeId, string town)
         {
             // @Suspend BIT = NULL
             // @DOWID INTEGER = NULL,
@@ -223,18 +227,18 @@ namespace GetMeetings
                 // Add Parms
                 // Suspend
                 SqlParameter bsuspend = cmd.Parameters.Add("@Suspend", SqlDbType.Bit);
-                if (b == '0')
-                {
-                    bsuspend.Value = false;
-                }
-                else if (b == '1')
-                {
-                    bsuspend.Value = true;
-                }
-                else
-                {
-                    bsuspend.Value = null;
-                }
+                //if (b == '0')
+                //{
+                //    bsuspend.Value = false;
+                //}
+                //else if (b == '1')
+                //{
+                //    bsuspend.Value = true;
+                //}
+                //else
+                //{
+                bsuspend.Value = null;
+                //}
 
                 // DOW (day of week id)
                 SqlParameter dowid = cmd.Parameters.Add("@DOWID", SqlDbType.Int);

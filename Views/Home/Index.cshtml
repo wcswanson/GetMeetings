@@ -16,12 +16,14 @@
             <form asp-controller="Home" method="post" role="form">
                 <main role="main" class="pb-3">                    
                     <div class="form-inline">
-                        <div class="form-group">
-                            <div class="col-sm-2">
-                                <label class="control-label">Suspended (True)</label>
-                                <select asp-for="SuspendSelect" asp-items="Model.Suspended"></select>
-                            </div>
-                        </div>
+                        <!--
+    <div class="form-group">
+        <div class="col-sm-2">
+            <label class="control-label">Suspended (True)</label>
+            <select asp-for="SuspendSelect" asp-items="Model.Suspended"></select>
+        </div>
+    </div>
+        -->
                         <div class="form-group">
                             <div class="col-sm-2">
                                 <label class="control-label">Day</label>
@@ -61,7 +63,7 @@
                     <table class="table table-bordered table-sm table-striped">
                         <thead>
                             <tr>
-                                <th>Suspend</th>
+                                <!-- <th>Suspend</th>-->
                                 <th>Day</th>
                                 <th>Time</th>
                                 <th>Town</th>
@@ -81,20 +83,20 @@
                             {
                                 @foreach (var m in Model.ListModel)
                                 {
-                                    <tr>
-                                        <td>@m.suspend</td>
-                                        <td>@m.Day</td>
-                                        <td>@m.Time</td>
-                                        <td>@m.Town</td>
-                                        <td>@m.GroupName</td>
-                                        <td>@m.Information</td>
-                                        <td>@m.Location</td>
-                                        <td>@m.Type</td>
-                                        <td>
-                                            <a asp-action="GetDirections" class="btn btn-sm btn-outline-info" asp-route-id="@m.Location, @m.Town">Get Dir</a>
-                                        </td>
+                        <tr>
+                            <!-- <td>@*@m.suspend*@</td> -->
+                            <td>@m.Day</td>
+                            <td>@m.Time</td>
+                            <td>@m.Town</td>
+                            <td>@m.GroupName</td>
+                            <td>@m.Information</td>
+                            <td>@m.Location</td>
+                            <td>@m.Type</td>
+                            <td>
+                                <a asp-action="GetDirections" class="btn btn-sm btn-outline-info" asp-route-id="@m.Location, @m.Town">Get Dir</a>
+                            </td>
 
-                                    </tr>
+                        </tr>
                                 }
                             }
                         </tbody>
