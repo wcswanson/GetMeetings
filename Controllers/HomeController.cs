@@ -77,8 +77,13 @@ namespace GetMeetings
         // [HttpGet("{id}")]
         public RedirectResult GetDirections(string id)
         {
-            return Redirect("http://downeastintergroup.org/DirectionsToMeeting.html?" + id.ToString() + ", ME");
-           
+            return Redirect("http://downeastintergroup.org/DirectionsToMeeting.html?" + id.ToString() + ", ME");           
+        }
+
+        [HttpGet]
+        public IActionResult OnLineMeetings()
+        {
+            return View();
         }
 
         // *******************************************************/
@@ -264,7 +269,12 @@ namespace GetMeetings
                 }
 
                 // Town
-                SqlParameter townname = cmd.Parameters.Add("@Town", SqlDbType.NVarChar);
+                if(String.IsNullOrEmpty(town))
+                {
+                    town = "";
+                }
+                
+                SqlParameter townname = cmd.Parameters.Add("@Town", SqlDbType.VarChar);
                 if (town.Length < 4)
                 {
                     townname.Value = null;

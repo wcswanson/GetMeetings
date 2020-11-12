@@ -1,0 +1,94 @@
+﻿@model GetMeetings.Models.DoViewModel
+
+    <!DOCTYPE html>
+
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>DEIG - Online Meeting List</title>
+        <!-- check the path for added bootstrap -->
+        <link href="~/lib/twitter-bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="~/css/site.css" rel="stylesheet" />
+        <link href="~/css/style.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="container">
+                <h1>Home Page for Online Meetings Updates</h1>
+
+                <form method="post" role="form">
+                    <main role="main" class="pb-3">
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <label class="control-label">Day</label>
+                                    <select asp-for="DOWSelect" class="form-control" asp-items="@(new SelectList(@Model.DOWModel, "Value", "Text"));">
+                                        <option value="8">All</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Time of Day -->
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label class="control-label">Time</label>
+                                    <select asp-for="TimeSelect" class="form-control" asp-items="@(new SelectList(@Model.TimeModel, "Value", "Text"))">
+                                        <option value="-">All</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                                    <input asp-controller="Online" id="Submit1" type="submit" value="Get Selection" />
+                                </div>
+                            </div>
+                            <!--<a asp-cotroller="Home" asp-action="Index" class="btn btn-sm btn-secondary">Physical Meeting List</a> -->
+                            <div class="form-group">
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                                    <input asp-controller="Home" id="Submit1" type="submit" value="Physical Meetings" />
+                                </div>
+                            </div>
+                        </div><br/>
+                        <!-- meeting list here-->
+                        <table class="table table-bordered table-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <!--  <th>Zoom Id</th> -->
+                                    <th>Day</th>
+                                    <th>Time</th>
+                                    <th>Group Name</th>
+                                    <th>Meeting Id</th>
+                                    <th>Password</th>
+                                    <th>Telephone</th>
+                                    <th>Notes</th>
+                                    <!-- <th>Update : Delete</th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.OnlineListModel == null)
+                                {
+                                    <tr><td colspan="8" class="text-center">No Meeting Lsit for that selection</td></tr>
+                                }
+                                else
+                                {
+                                    @foreach (var m in Model.OnlineListModel)
+                                    {
+                                        <tr>
+                                            <!-- <td>@m.zoomid</td> -->
+                                            <td>@m.day</td>
+                                            <td>@m.time</td>
+                                            <td>@m.groupname</td>
+                                            <td>@m.meetingid</td>
+                                            <td>@m.pswd</td>
+                                            <td>@m.telephone</td>
+                                            <td>@m.notes</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </main>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
