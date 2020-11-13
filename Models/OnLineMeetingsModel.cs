@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace GetMeetings.Models
 {
-   public class OnlineMeetingsModel
+    public class OnlineMeetingsModel
     {
         [Key]
         public int zoomid { get; set; }
@@ -27,6 +22,6 @@ namespace GetMeetings.Models
         public string telephone { get; set; }
         [Required]
         public string groupname { get; set; }
-        public string notes { get; set; }       
+        public string notes { get; set; }
     }
 }

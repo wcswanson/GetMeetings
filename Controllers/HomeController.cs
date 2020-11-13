@@ -13,15 +13,15 @@ namespace GetMeetings
 
     //todo: Change background on buttons
     //todo: Change font size to make it smaller
-    //todo: Remove titles in cshtml to make the presentation iframe ready
-    //todo: Correct spelling in Group name in sp
+    //z todo: Remove titles in cshtml to make the presentation iframe ready
+    //z todo: Correct spelling in Group name in sp
     //todo: Remove empty space for first 2 columns in sp.
     //todo: bootstrap styling
-    //todo: errow log add
-    //todo: Suspended removed from meeting list but hook is left for sp but always false
+    //todo: error log add
+    //z todo: Suspended removed from meeting list but hook is left for sp but always false
 
     public class HomeController : Controller
-    {   
+    {
         // Vars for holding information to pass to the spList
         //char b = 'a';
         int dayId = 0;
@@ -41,7 +41,7 @@ namespace GetMeetings
                 ListModel = PopulateList(dayId, timeId, town)
             };
 
-          //  dlmodel.SuspendSelect = "a";
+            //  dlmodel.SuspendSelect = "a";
 
             return View(dlmodel);
         }
@@ -77,7 +77,7 @@ namespace GetMeetings
         // [HttpGet("{id}")]
         public RedirectResult GetDirections(string id)
         {
-            return Redirect("http://downeastintergroup.org/DirectionsToMeeting.html?" + id.ToString() + ", ME");           
+            return Redirect("http://downeastintergroup.org/DirectionsToMeeting.html?" + id.ToString() + ", ME");
         }
 
         [HttpGet]
@@ -163,7 +163,7 @@ namespace GetMeetings
                             });
                         }
                     }
-                    catch(SqlException ex)
+                    catch (SqlException ex)
                     {
                         msg = msg + " spDow: " + ex.Message.ToString();
                     }
@@ -205,7 +205,7 @@ namespace GetMeetings
                     {
                         msg = "sptime: " + ex.Message.ToString();
                     }
-                    
+
                 }
                 connection.Close();
             }
@@ -269,11 +269,11 @@ namespace GetMeetings
                 }
 
                 // Town
-                if(String.IsNullOrEmpty(town))
+                if (String.IsNullOrEmpty(town))
                 {
                     town = "";
                 }
-                
+
                 SqlParameter townname = cmd.Parameters.Add("@Town", SqlDbType.VarChar);
                 if (town.Length < 4)
                 {
@@ -306,7 +306,7 @@ namespace GetMeetings
                             meetingList.Add(ml);
                         }
                     }
-                    catch(SqlException ex)
+                    catch (SqlException ex)
                     {
                         msg = msg + " spList: " + ex.Message.ToString();
                     }
@@ -317,9 +317,9 @@ namespace GetMeetings
             }
         }
 
-       private static string ExportMeetingList()
+        private static string ExportMeetingList()
         {
-            string comma = ", ";          
+            string comma = ", ";
 
             using (SqlConnection connection = new SqlConnection(Startup.cnstr))
             {
@@ -354,12 +354,12 @@ namespace GetMeetings
                         stringBuilder.Append(row[column2.ColumnName].ToString() + comma);
                     }
                     stringBuilder.AppendLine();
-                }              
+                }
 
-                 return stringBuilder.ToString();
+                return stringBuilder.ToString();
             }
         }
-            
+
 
     } // controller class
 } // Namespance

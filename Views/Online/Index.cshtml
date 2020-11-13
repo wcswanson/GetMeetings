@@ -5,8 +5,7 @@
     <html>
     <head>
         <meta name="viewport" content="width=device-width" />
-        <title>DEIG - Online Meeting List</title>
-        <!-- check the path for added bootstrap -->
+        <title>DEIG - Online Meeting List</title>        
         <link href="~/lib/twitter-bootstrap/css/bootstrap.min.css" rel="stylesheet" />
         <link href="~/css/site.css" rel="stylesheet" />
         <link href="~/css/style.css" rel="stylesheet" />
@@ -14,8 +13,7 @@
     <body>
         <div class="container-fluid">
             <div class="container">
-                <h1>Home Page for Online Meetings Updates</h1>
-
+                <h1>DEIG - Online Meeting List</h1>
                 <form method="post" role="form">
                     <main role="main" class="pb-3">
                         <div class="form-inline">
@@ -40,8 +38,7 @@
                                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
                                     <input asp-controller="Online" id="Submit1" type="submit" value="Get Selection" />
                                 </div>
-                            </div>
-                            <!--<a asp-cotroller="Home" asp-action="Index" class="btn btn-sm btn-secondary">Physical Meeting List</a> -->
+                            </div>                           
                             <div class="form-group">
                                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
                                     <input asp-controller="Home" id="Submit1" type="submit" value="Physical Meetings" />
@@ -59,14 +56,13 @@
                                     <th>Meeting Id</th>
                                     <th>Password</th>
                                     <th>Telephone</th>
-                                    <th>Notes</th>
-                                    <!-- <th>Update : Delete</th> -->
+                                    <th>Notes</th>                                    
                                 </tr>
                             </thead>
                             <tbody>
                                 @if (Model.OnlineListModel == null)
                                 {
-                                    <tr><td colspan="8" class="text-center">No Meeting Lsit for that selection</td></tr>
+                                    <tr><td colspan="7" class="text-center">No Meeting Lsit for that selection</td></tr>
                                 }
                                 else
                                 {

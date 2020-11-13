@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using GetMeetings.Models;
 using Microsoft.AspNetCore.Mvc;
-using GetMeetings.Models;
-using System.Data.SqlClient;
-using System.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace GetMeetings.Controllers
 {
