@@ -30,6 +30,9 @@ namespace GetMeetings.Models
         public string groupnameSelect { get; set; }
         public string notesSelect { get; set; }
 
+        // District
+        public int DistrictSelection { get; set; }
+
         // To get the onling meeting model
         public IEnumerable<OnlineMeetingsModel> OnlineListModel { get; set; }
 

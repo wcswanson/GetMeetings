@@ -27,6 +27,7 @@ namespace GetMeetings
         int dayId = 0;
         int timeId = 0;
         string town = "";
+        int district = -1;
         static string msg = "";
         //private Stream fileStream;
 
@@ -37,8 +38,8 @@ namespace GetMeetings
                 TownModel = PopulateTowns(),
                 DOWModel = PopulateDOW(),
                 TimeModel = PopulateTime(),
-                // ListModel = PopulateList(b, dayId, timeId, town)
-                ListModel = PopulateList(dayId, timeId, town)
+                DistrictModel = PopulateDistricts(),
+                ListModel = PopulateList(dayId, timeId, town, district)
             };
 
             //  dlmodel.SuspendSelect = "a";
@@ -48,7 +49,7 @@ namespace GetMeetings
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Index(char? SuspendSelect, int? DOWSelection, int? TimeSelection, string TownSelection)
+        public IActionResult Index(char? SuspendSelect, int? DOWSelection, int? TimeSelection, string TownSelection, int? DistrictSelection)
         {
 
 
@@ -66,8 +67,9 @@ namespace GetMeetings
                 TownModel = PopulateTowns(),
                 DOWModel = PopulateDOW(),
                 TimeModel = PopulateTime(),
-                // ListModel = PopulateList(b, DOWSelection, TimeSelection, TownSelection)
-                ListModel = PopulateList(DOWSelection, TimeSelection, TownSelection)
+                DistrictModel = PopulateDistricts(),
+                
+                ListModel = PopulateList(DOWSelection, TimeSelection, TownSelection, DistrictSelection)
             };
 
             return View(dlmodel);
@@ -130,6 +132,43 @@ namespace GetMeetings
                     catch (SqlException ex)
                     {
                         msg = msg + " spTowns: " + ex.Message.ToString();
+                    }
+                }
+                connection.Close();
+            }
+            return items;
+        }
+
+        // District
+        private static List<SelectListItem> PopulateDistricts()
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+
+            using (SqlConnection connection = new SqlConnection(Startup.cnstr))
+            {
+                connection.Open();
+                string sql = "spDistrict";
+
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    try
+                    {
+
+                        while (dr.Read())
+                        {
+                            items.Add(new SelectListItem
+                            {
+                                Value = dr["district"].ToString(),
+                                Text = dr["district"].ToString()
+                            });
+                        }
+                    }
+                    catch (SqlException ex)
+                    {
+                        msg = msg + " spDistrict: " + ex.Message.ToString();
                     }
                 }
                 connection.Close();
@@ -213,7 +252,7 @@ namespace GetMeetings
         }
 
         // private static List<MeetingListModel> PopulateList(char? b, int? dow, int? timeId, string town)
-        private static List<MeetingListModel> PopulateList(int? dow, int? timeId, string town)
+        private static List<MeetingListModel> PopulateList(int? dow, int? timeId, string town, int? district)
         {
             // @Suspend BIT = NULL
             // @DOWID INTEGER = NULL,
@@ -230,21 +269,10 @@ namespace GetMeetings
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 // Add Parms
-                // Suspend
+                // Suspend -- not shown in list display
                 SqlParameter bsuspend = cmd.Parameters.Add("@Suspend", SqlDbType.Bit);
-                //if (b == '0')
-                //{
-                //    bsuspend.Value = false;
-                //}
-                //else if (b == '1')
-                //{
-                //    bsuspend.Value = true;
-                //}
-                //else
-                //{
                 bsuspend.Value = null;
-                //}
-
+                
                 // DOW (day of week id)
                 SqlParameter dowid = cmd.Parameters.Add("@DOWID", SqlDbType.Int);
 
@@ -284,6 +312,19 @@ namespace GetMeetings
                     townname.Value = town.ToString();
                 }
 
+                // District
+                // DOW (day of week id)
+                SqlParameter districtnumber = cmd.Parameters.Add("@District", SqlDbType.Int);
+
+                if (district > 0)
+                {
+                    districtnumber.Value = (int)district;
+                }
+                else
+                {
+                    districtnumber.Value = null;
+                }
+
                 using (SqlDataReader dr = cmd.ExecuteReader())
                 {
                     try
@@ -302,6 +343,7 @@ namespace GetMeetings
                             ml.Location = Convert.ToString(dr["Location"]);
                             ml.Type = Convert.ToString(dr["Type"]);
                             ml.suspend = Convert.ToBoolean(dr["suspend"]);
+                            ml.district = Convert.ToInt32(dr["district"]);
 
                             meetingList.Add(ml);
                         }

@@ -37,5 +37,9 @@ namespace GetMeetings.Models
         // Meeting list
         public IEnumerable<MeetingListModel> ListModel { get; set; }
 
+        // District
+        public int DistrictSelection { get; set; }
+        public IEnumerable<SelectListItem>  DistrictModel {get; set;}
+
     }
 }

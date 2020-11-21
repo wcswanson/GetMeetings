@@ -42,6 +42,15 @@
                                     <option value="-">Select Town</option>
                                 </select>
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-3" id="filter-value-group">
+                                <label class="control-label">District</label>
+                                <!-- Add Select Town -->
+                                <select asp-for="DistrictSelection" class="form-control" asp-items="@(new SelectList(@Model.DistrictModel, "Value", "Text"))">
+                                    <option value="-">Select District</option>
+                                </select>
+                            </div>
                         </div>&nbsp;
                         <div class="form-group">
                             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
@@ -64,6 +73,7 @@
                                 <th>Information</th>
                                 <th>Location</th>
                                 <th>Type</th>
+                                <th>District</th>
                                 <th>Get Directions</th>
                             </tr>
                         </thead>
@@ -84,6 +94,7 @@
                                         <td>@m.Information</td>
                                         <td>@m.Location</td>
                                         <td>@m.Type</td>
+                                        <td>@m.district</td>
                                         <td>
                                             <a asp-action="GetDirections" class="btn btn-sm btn-outline-info" asp-route-id="@m.Location, @m.Town">Get Dir</a>
                                         </td>

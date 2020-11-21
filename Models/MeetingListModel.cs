@@ -16,6 +16,7 @@ namespace GetMeetings.Models
         public string Information { get; set; }
         public string Location { get; set; }
         public string Type { get; set; }
-        public bool suspend { get; set; }
+        public bool suspend { get; set; }       
+        public int district { get; set; }
     }
 }

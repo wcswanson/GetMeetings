@@ -6,5 +6,6 @@ namespace GetMeetings.Models
     {
         [Key]
         public string Town { get; set; }
+      //  public int district { get; set; }
     }
 }

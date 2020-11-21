@@ -23,5 +23,7 @@ namespace GetMeetings.Models
         [Required]
         public string groupname { get; set; }
         public string notes { get; set; }
+        public int district { get; set; }
+
     }
 }
