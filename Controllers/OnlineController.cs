@@ -14,10 +14,11 @@ namespace GetMeetings.Controllers
 
         // ZoomId and TempData["id"] is used to pass the id from controller function to controller function
         // But not the helper functions
-        int ZoomId = 0;
+        // int ZoomId = 0;
         int dayId = 0;
         int timeId = 0;
         static string msg = "";
+        int district = -1;
         //string sp = "";
 
 #nullable enable
@@ -28,7 +29,8 @@ namespace GetMeetings.Controllers
             {
                 DOWModel = PopulateDOW(),
                 TimeModel = PopulateTime(),
-                OnlineListModel = (IEnumerable<OnlineMeetingsModel>)PopulateOnlineList(dayId, timeId)
+                DistrictModel = PopulateDistricts(),
+                OnlineListModel = (IEnumerable<OnlineMeetingsModel>)PopulateOnlineList(dayId, timeId, district)
             };
 
             return View(doViewmodel);
@@ -37,14 +39,15 @@ namespace GetMeetings.Controllers
         // Index Post
         [HttpPost]
         // [ValidateAntiForgeryToken]
-        public IActionResult Index(int? DOWSelect, int? TimeSelect)
+        public IActionResult Index(int? DOWSelect, int? TimeSelect, int? DistrictSelect)
         {
 
             var doViewmodel = new DoViewModel()
             {
                 DOWModel = PopulateDOW(),
                 TimeModel = PopulateTime(),
-                OnlineListModel = (IEnumerable<OnlineMeetingsModel>)PopulateOnlineList(DOWSelect, TimeSelect)
+                DistrictModel = PopulateDistricts(),
+                OnlineListModel = (IEnumerable<OnlineMeetingsModel>)PopulateOnlineList(DOWSelect, TimeSelect, DistrictSelect)
             };
 
             return View(doViewmodel);
@@ -124,8 +127,46 @@ namespace GetMeetings.Controllers
             return items;
         }
 
+        // District
+        private static List<SelectListItem> PopulateDistricts()
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+
+            using (SqlConnection connection = new SqlConnection(Startup.cnstr))
+            {
+                connection.Open();
+                string sql = "spDistrict";
+
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    try
+                    {
+
+                        while (dr.Read())
+                        {
+                            items.Add(new SelectListItem
+                            {
+                                Value = dr["district"].ToString(),
+                                Text = dr["district"].ToString()
+                            });
+                        }
+                    }
+                    catch (SqlException ex)
+                    {
+                        msg = msg + " spDistrict: " + ex.Message.ToString();
+                    }
+                }
+                connection.Close();
+            }
+            return items;
+        }
+
+
         // Populate the online list
-        private static List<OnlineMeetingsModel> PopulateOnlineList(int? DayId, int? TimeId)
+        private static List<OnlineMeetingsModel> PopulateOnlineList(int? DayId, int? TimeId, int? district)
         {
             List<OnlineMeetingsModel> onlineList = new List<OnlineMeetingsModel>();
 
@@ -160,6 +201,17 @@ namespace GetMeetings.Controllers
                     timeid.Value = TimeId;
                 }
 
+                // District
+                SqlParameter distrinctnumber = cmd.Parameters.Add("@District", SqlDbType.Int);
+                if (district == 0 || district == null)
+                {
+                    distrinctnumber.Value = null;
+                }
+                else
+                {
+                    distrinctnumber.Value = district;
+                }
+
                 using (SqlDataReader dr = cmd.ExecuteReader())
                 {
                     try
@@ -178,6 +230,7 @@ namespace GetMeetings.Controllers
                             ol.telephone = Convert.ToString(dr["telephone"]);
                             ol.groupname = Convert.ToString(dr["groupname"]);
                             ol.notes = Convert.ToString(dr["notes"]);
+                            ol.district = Convert.ToInt32(dr["district"]);
 
                             onlineList.Add(ol);
                         }

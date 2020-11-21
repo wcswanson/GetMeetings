@@ -35,10 +35,19 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <div class="col-sm-3" id="filter-value-group">
+                                    <label class="control-label">District</label>
+                                    <!-- Add Select Town -->
+                                    <select asp-for="DistrictSelect" class="form-control" asp-items="@(new SelectList(@Model.DistrictModel, "Value", "Text"))">
+                                        <option value="-">Select District</option>
+                                    </select>
+                                </div>
+                            </div>&nbsp;
+                            <div class="form-group">
                                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
                                     <input asp-controller="Online" id="Submit1" type="submit" value="Get Selection" />
                                 </div>
-                            </div>                           
+                            </div>
                             <div class="form-group">
                                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
                                     <input asp-controller="Home" id="Submit1" type="submit" value="Physical Meetings" />
@@ -56,7 +65,8 @@
                                     <th>Meeting Id</th>
                                     <th>Password</th>
                                     <th>Telephone</th>
-                                    <th>Notes</th>                                    
+                                    <th>Notes</th> 
+                                    <th>District</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -77,6 +87,7 @@
                                             <td>@m.pswd</td>
                                             <td>@m.telephone</td>
                                             <td>@m.notes</td>
+                                            <td>@m.district</td>
                                         </tr>
                                     }
                                 }

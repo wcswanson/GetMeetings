@@ -251,6 +251,8 @@ namespace GetMeetings
             return items;
         }
 
+       
+
         // private static List<MeetingListModel> PopulateList(char? b, int? dow, int? timeId, string town)
         private static List<MeetingListModel> PopulateList(int? dow, int? timeId, string town, int? district)
         {
