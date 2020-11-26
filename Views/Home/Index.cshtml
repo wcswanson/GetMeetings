@@ -4,15 +4,37 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>DEIG - Physical Meeting List</title>    
+    <title>DEIG - Physical Meeting List</title>
     <link href="~/lib/twitter-bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
-    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/style.css" rel="stylesheet" /> 
+    <style id="table_style" type="text/css">
+        body {
+            font-family: Arial;
+            font-size: 8pt;
+        }
+
+        table {
+            border: 1px solid #ccc;
+            border-collapse: collapse;
+        }
+
+            table th {
+                background-color: #F7F7F7;
+                color: #333;
+                font-weight: bold;
+            }
+
+            table th, table td {
+                padding: 5px;
+                border: 1px solid #ccc;
+            }
+    </style>
 </head>
 <body>
     <div class="container-fluid">
         <div class="container">
-            <h1>DEIG - Physical Meeting List</h1>
+            <h3>DEIG - Physical Meeting List</h3>
             <form method="post" role="form">
                 <main role="main" class="pb-3">
                     <div class="form-inline">
@@ -56,57 +78,86 @@
                             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
                                 <input asp-controller="Home" id="Submit" type="submit" value="Get Selection" />
                             </div>
-                        </div>&nbsp;
-                        <div class="form-group">
-                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                                <input asp-controller="Online" id="Submit" type="submit" value="Online Meetings" />
-                            </div>
                         </div>
                     </div><br />
-                    <table class="table table-bordered table-sm table-striped">
-                        <thead>
-                            <tr>
-                                <th>Day</th>
-                                <th>Time</th>
-                                <th>Town</th>
-                                <th>Group Name</th>
-                                <th>Information</th>
-                                <th>Location</th>
-                                <th>Type</th>
-                                <th>District</th>
-                                <th>Get Directions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (Model.ListModel == null)
-                            {
-                                <tr><td colspan="8" class="text-center">No Meeting Lsit for that selection</td></tr>
-                            }
-                            else
-                            {
-                                @foreach (var m in Model.ListModel)
+                    <div class="form-group">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                            <input asp-controller="Online" id="Submit" type="submit" value="Online Meetings" />&nbsp;&nbsp;
+                            <input type="button" onclick="PrintTable();" value="Print Selection" />
+                        </div>
+                    </div> <br />
+                    <div id="dvContents" style="padding: 5px; width:405px">
+                        <table class="table table-bordered table-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Day</th>
+                                    <th>Time</th>
+                                    <th>Town</th>
+                                    <th>Group Name</th>
+                                    <th>Information</th>
+                                    <th>Location</th>
+                                    <th>Type</th>
+                                    <th>District</th>
+                                    <th>Get Directions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.ListModel == null)
                                 {
-                                    <tr>
-                                        <td>@m.Day</td>
-                                        <td>@m.Time</td>
-                                        <td>@m.Town</td>
-                                        <td>@m.GroupName</td>
-                                        <td>@m.Information</td>
-                                        <td>@m.Location</td>
-                                        <td>@m.Type</td>
-                                        <td>@m.district</td>
-                                        <td>
-                                            <a asp-action="GetDirections" class="btn btn-sm btn-outline-info" asp-route-id="@m.Location, @m.Town">Get Dir</a>
-                                        </td>
-                                    </tr>
+                                    <tr><td colspan="8" class="text-center">No Meeting Lsit for that selection</td></tr>
                                 }
-                            }
-                        </tbody>
-                    </table>
+                                else
+                                {
+                                    @foreach (var m in Model.ListModel)
+                                    {
+                                        <tr>
+                                            <td>@m.Day</td>
+                                            <td>@m.Time</td>
+                                            <td>@m.Town</td>
+                                            <td>@m.GroupName</td>
+                                            <td>@m.Information</td>
+                                            <td>@m.Location</td>
+                                            <td>@m.Type</td>
+                                            <td>@m.district</td>
+                                            <td>
+                                                <a asp-action="GetDirections" class="btn btn-sm btn-outline-info" asp-route-id="@m.Location, @m.Town">Get Dir</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div><br />                    
                     <a asp-action="ExportList" class="btn btn-sm btn-info">Export Meeting List</a>
                 </main>
             </form>
         </div>
     </div>
+    <script type="text/javascript">
+        function PrintTable() {
+            var printWindow = window.open('', '', 'height=200,width=400');
+            printWindow.document.write('<html><head><title>DEIG Physical Meetings</title>');
+
+            //Print the Table CSS.
+            var table_style = document.getElementById("table_style").innerHTML;
+            printWindow.document.write('<style type = "text/css">');
+            printWindow.document.write(table_style);
+            printWindow.document.write('</style>');
+            printWindow.document.write('</head>');
+
+            //Print the DIV contents i.e. the HTML Table.
+            printWindow.document.write('<body>');
+            var divContents = document.getElementById("dvContents").innerHTML;
+            printWindow.document.write(divContents);
+            printWindow.document.write('</body>');
+
+            printWindow.document.write('</html>');
+            printWindow.document.close();
+            printWindow.print();
+        }
+    </script>
 </body>
+
+
+
 </html>
