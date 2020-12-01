@@ -1,0 +1,149 @@
+﻿@model GetMeetings.Models.DoViewModel
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>DEIG - Online Meeting List</title>
+    <link href="~/lib/twitter-bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link href="~/css/style.css" rel="stylesheet" />
+    <style id="table_style" type="text/css">
+        body {
+            font-family: Arial;
+            font-size: 8pt;
+        }
+
+        table {
+            border: 1px solid #ccc;
+            border-collapse: collapse;
+        }
+
+            table th {
+                background-color: #F7F7F7;
+                color: #333;
+                font-weight: bold;
+            }
+
+            table th, table td {
+                padding: 5px;
+                border: 1px solid #ccc;
+            }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="container">
+            <h3>DEIG - Online Meeting List</h3>
+            <form method="post" role="form">
+                <main role="main" class="pb-3">
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <div class="col-sm-2">
+                                <label class="control-label">Day</label>
+                                <select asp-for="DOWSelect" class="form-control" asp-items="@(new SelectList(@Model.DOWModel, "Value", "Text"));">
+                                    <option value="8">All</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Time of Day -->
+                        <div class="form-group">
+                            <div class="col-sm-3">
+                                <label class="control-label">Time</label>
+                                <select asp-for="TimeSelect" class="form-control" asp-items="@(new SelectList(@Model.TimeModel, "Value", "Text"))">
+                                    <option value="-">All</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-3" id="filter-value-group">
+                                <label class="control-label">District</label>
+                                <!-- Add Select Town -->
+                                <select asp-for="DistrictSelect" class="form-control" asp-items="@(new SelectList(@Model.DistrictModel, "Value", "Text"))">
+                                    <option value="-">Select District</option>
+                                </select>
+                            </div>
+                        </div>&nbsp;
+                        <div class="form-group">
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                                <input asp-controller="Online" id="Submit1" type="submit" value="Get Selection" />
+                            </div>
+                        </div>
+                    </div><br/>
+                        <div class="form-group">
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+                                <input asp-controller="Home" id="Submit1" type="submit" value="Physical Meetings" />&nbsp;&nbsp;
+                                <input type="button" onclick="PrintTable();" value="Print Selection" />
+                            </div>                       
+                    </div><br />
+                    <!-- meeting list here-->
+                    <div id="dvContents" style="padding: 5px; width:405px">
+                        <table class="table table-bordered table-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <!--  <th>Zoom Id</th> -->
+                                    <th>Day</th>
+                                    <th>Time</th>
+                                    <th>Group Name</th>
+                                    <th>Meeting Id</th>
+                                    <th>Password</th>
+                                    <th>Telephone</th>
+                                    <th>Notes</th>
+                                    <th>District</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.OnlineListModel == null)
+                                {
+                                    <tr><td colspan="7" class="text-center">No Meeting Lsit for that selection</td></tr>
+                                }
+                                else
+                                {
+                                    @foreach (var m in Model.OnlineListModel)
+                                    {
+                                        <tr>
+                                            <!-- <td>@m.zoomid</td> -->
+                                            <td>@m.day</td>
+                                            <td>@m.time</td>
+                                            <td>@m.groupname</td>
+                                            <td>@m.meetingid</td>
+                                            <td>@m.pswd</td>
+                                            <td>@m.telephone</td>
+                                            <td>@m.notes</td>
+                                            <td>@m.district</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </main>
+            </form>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function PrintTable() {
+            var printWindow = window.open('', '', 'height=200,width=400');
+            printWindow.document.write('<html><head><title>DEIG Online Meetings</title>');
+
+            //Print the Table CSS.
+            var table_style = document.getElementById("table_style").innerHTML;
+            printWindow.document.write('<style type = "text/css">');
+            printWindow.document.write(table_style);
+            printWindow.document.write('</style>');
+            printWindow.document.write('</head>');
+
+            //Print the DIV contents i.e. the HTML Table.
+            printWindow.document.write('<body>');
+            var divContents = document.getElementById("dvContents").innerHTML;
+            printWindow.document.write(divContents);
+            printWindow.document.write('</body>');
+
+            printWindow.document.write('</html>');
+            printWindow.document.close();
+            printWindow.print();
+        }
+    </script>
+</body>
+</html>
