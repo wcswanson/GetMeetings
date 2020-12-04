@@ -19,6 +19,7 @@ namespace GetMeetings.Models
         [Display(Name = "Password")]
         [StringLength(6)]
         public string pswd { get; set; }
+        public string url { get; set; }
         public string telephone { get; set; }
         [Required]
         public string groupname { get; set; }

@@ -227,6 +227,7 @@ namespace GetMeetings.Controllers
                             ol.meetingid = Convert.ToString(dr["meetingid"]);
                             // "password" is not allowed for it throws an out of range exception.
                             ol.pswd = Convert.ToString(dr["pswd"]);
+                            ol.url = Convert.ToString(dr["url"]);
                             ol.telephone = Convert.ToString(dr["telephone"]);
                             ol.groupname = Convert.ToString(dr["groupname"]);
                             ol.notes = Convert.ToString(dr["notes"]);

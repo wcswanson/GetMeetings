@@ -88,6 +88,7 @@
                                     <th>Group Name</th>
                                     <th>Meeting Id</th>
                                     <th>Password</th>
+                                    <th>Url</th>
                                     <th>Telephone</th>
                                     <th>Notes</th>
                                     <th>District</th>
@@ -109,6 +110,12 @@
                                             <td>@m.groupname</td>
                                             <td>@m.meetingid</td>
                                             <td>@m.pswd</td>
+                                            <td>
+                                            @if (m.url.Length > 10)
+                                            {
+                                            <a target="_blank" href="@m.url">Link</a>}
+                                            else { <span>N/A</span>}
+                                            </td>
                                             <td>@m.telephone</td>
                                             <td>@m.notes</td>
                                             <td>@m.district</td>
