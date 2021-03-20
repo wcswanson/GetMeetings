@@ -9,5 +9,5 @@ Project to retrieve a meeting list from a database for physical and online meeti
 * Stored procedures with parameters are used for all database transactions.
 * This is an Aspnet core project targeting Core 3.1
 * This project fixes the filtering project that was written for aspx.
-* The goal is to host this project on an Apache server instead of ISS.
+* The goal is to host this project on an Apache server instead of IIS.
 * Bootstap files need to be added. 
