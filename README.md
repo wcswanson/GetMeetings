@@ -1,5 +1,5 @@
 # GetMeetings
-Progject to retrieve a meeting list from a database for physical and online meetings.
+Project to retrieve a meeting list from a database for physical and online meetings.
 
 * Used Visual Studio 2019 Community Edition
 * Add your own connection string to appsettiings.json
